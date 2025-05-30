@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes de Servicio y Tarifas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Assuming Inter is loaded or fallback to sans-serif */
+        }
+        .plan-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .plan-card.selected {
+            border-color: #f59e0b; /* amber-500 */
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.5);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width for readability */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 350px; /* Max height */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        /* Custom checkbox styling for better visual appeal */
+        input[type="checkbox"] {
+            appearance: none;
+            background-color: #fff;
+            margin-right: 0.5rem;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 0.15em solid currentColor;
+            border-radius: 0.15em;
+            transform: translateY(-0.075em);
+            display: inline-grid;
+            place-content: center;
+        }
+        input[type="checkbox"]::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em #f59e0b; /* amber-500 */
+            transform-origin: bottom left;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+        input[type="checkbox"]:disabled {
+            border-color: #d1d5db; /* gray-300 */
+            background-color: #f3f4f6; /* gray-100 */
+        }
+         input[type="checkbox"]:disabled::before {
+            box-shadow: inset 1em 1em #9ca3af; /* gray-400 */
+        }
+
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col">
+
+    <header class="bg-amber-600 text-white p-6 shadow-md">
+        <div class="container mx-auto max-w-5xl">
+            <h1 class="text-3xl font-bold text-center">Planes de Servicio y Tarifas</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto max-w-5xl p-4 sm:p-6 md:p-8 flex-grow">
+        <section id="introduccion" class="mb-10 text-center">
+            <p class="text-lg text-stone-700">
+                Bienvenido a nuestro selector interactivo de planes. Aquí podrás explorar las características y costes de nuestros servicios SOTA, CABALLO y REY. Utiliza las herramientas a continuación para comparar los planes y calcular una estimación de tu inversión.
+            </p>
+        </section>
+
+        <section id="planes" class="mb-12">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-6 text-center">Nuestros Planes</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div id="card-sota" class="plan-card bg-white p-6 rounded-lg shadow-lg border-2 border-transparent cursor-pointer" onclick="seleccionarPlan('sota')">
+                    <div class="flex flex-col items-center mb-4">
+                        <span class="text-5xl text-amber-500 mb-2">🛡️</span>
+                        <h3 class="text-xl font-bold text-amber-600">SOTA</h3>
+                    </div>
+                    <p class="text-3xl font-bold mb-4 text-center">45€<span class="text-sm font-normal">/mes</span></p>
+                    <ul class="space-y-2 text-sm text-stone-700">
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Programa de gestión integral.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> App de reservas genérica.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Calendario.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Gestión de colas.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Contabilidad.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Perfil cliente con historiales.</li>
+                    </ul>
+                </div>
+                <div id="card-caballo" class="plan-card bg-white p-6 rounded-lg shadow-lg border-2 border-transparent cursor-pointer" onclick="seleccionarPlan('caballo')">
+                    <div class="flex flex-col items-center mb-4">
+                        <span class="text-5xl text-amber-500 mb-2">🐎</span>
+                        <h3 class="text-xl font-bold text-amber-600">CABALLO</h3>
+                    </div>
+                    <p class="text-3xl font-bold mb-4 text-center">60€<span class="text-sm font-normal">/mes</span></p>
+                    <ul class="space-y-2 text-sm text-stone-700">
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Todo incluido en SOTA.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Pagos a través de la app genérica.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Notificaciones.</li>
+                    </ul>
+                </div>
+                <div id="card-rey" class="plan-card bg-white p-6 rounded-lg shadow-lg border-2 border-transparent cursor-pointer" onclick="seleccionarPlan('rey')">
+                    <div class="flex flex-col items-center mb-4">
+                        <span class="text-5xl text-amber-500 mb-2">👑</span>
+                        <h3 class="text-xl font-bold text-amber-600">REY</h3>
+                    </div>
+                    <p class="text-3xl font-bold mb-4 text-center">80€<span class="text-sm font-normal">/mes</span></p>
+                    <ul class="space-y-2 text-sm text-stone-700">
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> Todo incluido en CABALLO.</li>
+                        <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">✔️</span> App personalizada.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparativa-costes" class="mb-12">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-6 text-center">Comparativa de Costes Mensuales</h2>
+            <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+                <div class="chart-container">
+                    <canvas id="costesMensualesChart"></canvas>
+                </div>
+                <p class="text-sm text-stone-600 mt-4 text-center">Este gráfico muestra una comparación directa de los costes mensuales base de cada plan.</p>
+            </div>
+        </section>
+
+        <section id="calculadora" class="mb-12">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-6 text-center">Calculadora de Coste Total Estimado</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-semibold mb-3 text-stone-700">1. Selecciona tu Plan Base:</h4>
+                        <div class="space-y-2 mb-6" id="planSelectorRadios">
+                            </div>
+
+                        <h4 class="text-lg font-semibold mb-3 text-stone-700">2. Selecciona Costes de Instalación Únicos (Opcional):</h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label for="checkPagoApp" class="flex items-center text-stone-700 cursor-pointer">
+                                    <input type="checkbox" id="checkPagoApp" onchange="actualizarCostes()">
+                                    Creación de plataforma de pago personalizada <span class="font-semibold ml-1">(+120€)</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="checkAppPersonalizada" class="flex items-center text-stone-700 cursor-pointer">
+                                    <input type="checkbox" id="checkAppPersonalizada" onchange="actualizarCostes()">
+                                    Creación de App personalizada <span class="font-semibold ml-1">(+160€)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-lg border border-amber-200">
+                        <h4 class="text-lg font-bold text-amber-700 mb-4">Resumen de Costes Estimados:</h4>
+                        <div class="space-y-3 text-stone-700">
+                            <p>Plan Seleccionado: <strong id="planSeleccionadoNombre" class="text-amber-600">Ninguno</strong></p>
+                            <p>Coste Mensual del Plan: <strong id="costeMensualSeleccionado" class="text-amber-600">0€</strong></p>
+                            <p>Costes Únicos de Instalación: <strong id="costesUnicosSeleccionados" class="text-amber-600">0€</strong></p>
+                            <hr class="my-3 border-amber-300">
+                            <p class="text-xl">Coste Total Primer Año (Estimado):</p>
+                            <p class="text-3xl font-bold text-amber-600" id="costeTotalAnual">0€</p>
+                        </div>
+                    </div>
+                </div>
+                 <p class="text-sm text-stone-600 mt-6 text-center">
+                    Esta calculadora te ayuda a estimar el coste total durante el primer año, incluyendo el plan mensual y los costes únicos de instalación que elijas. Los costes de instalación son pagos únicos.
+                </p>
+            </div>
+        </section>
+
+        <section id="detalles-costes-adicionales" class="mb-12">
+            <h2 class="text-2xl font-semibold text-amber-700 mb-6 text-center">Detalles de Costes Adicionales (Pago Único)</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg space-y-4">
+                <div>
+                    <h4 class="text-lg font-semibold text-stone-700">Instalación de pago a través de la app genérica</h4>
+                    <p class="text-stone-600">Coste: <strong class="text-amber-600">120€</strong> (pago único).</p>
+                    <p class="text-sm text-stone-500">Concepto: Creación de la plataforma de pago personalizada para la integración en la aplicación genérica. Requerido si deseas activar la funcionalidad de pagos en los planes CABALLO o REY.</p>
+                </div>
+                <hr class="border-stone-200">
+                <div>
+                    <h4 class="text-lg font-semibold text-stone-700">Instalación de la App personalizada</h4>
+                    <p class="text-stone-600">Coste: <strong class="text-amber-600">160€</strong> (pago único).</p>
+                    <p class="text-sm text-stone-500">Concepto: Coste asociado a la creación y desarrollo de la aplicación personalizada. Requerido si deseas la App personalizada del plan REY.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-800 text-stone-300 p-6 text-center mt-auto">
+        <p>&copy; <span id="currentYear"></span> Planes de Servicio. Información basada en el informe del 30 de mayo de 2025.</p>
+    </footer>
+
+    <script>
+        const fullPlanData = {
+            sota: {
+                nombre: "SOTA",
+                costeMensual: 45,
+            },
+            caballo: {
+                nombre: "CABALLO",
+                costeMensual: 60,
+            },
+            rey: {
+                nombre: "REY",
+                costeMensual: 80,
+            }
+        };
+
+        const costesUnicosInfo = {
+            pagoApp: { coste: 120, relevantePara: ["caballo", "rey"] },
+            appPersonalizada: { coste: 160, relevantePara: ["rey"] }
+        };
+
+        let planSeleccionadoId = null;
+
+        function generarRadiosPlanes() {
+            const container = document.getElementById('planSelectorRadios');
+            container.innerHTML = ''; // Limpiar radios existentes
+            Object.keys(fullPlanData).forEach(planId => {
+                const plan = fullPlanData[planId];
+                const div = document.createElement('div');
+                div.classList.add('flex', 'items-center');
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.id = `radio-${planId}`;
+                input.name = 'planBase';
+                input.value = planId;
+                input.classList.add('mr-2', 'h-4', 'w-4', 'text-amber-600', 'border-stone-300', 'focus:ring-amber-500');
+                input.onchange = () => seleccionarPlan(planId);
+
+                const label = document.createElement('label');
+                label.htmlFor = `radio-${planId}`;
+                label.textContent = `${plan.nombre} (${plan.costeMensual}€/mes)`;
+                label.classList.add('text-stone-700', 'cursor-pointer');
+
+                div.appendChild(input);
+                div.appendChild(label);
+                container.appendChild(div);
+            });
+        }
+
+
+        function seleccionarPlan(idPlan) {
+            planSeleccionadoId = idPlan;
+
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('selected', 'border-amber-500');
+                card.classList.add('border-transparent');
+            });
+            const selectedCard = document.getElementById(`card-${idPlan}`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected', 'border-amber-500');
+                selectedCard.classList.remove('border-transparent');
+            }
+
+            // Marcar el radio button correspondiente
+            const radioInput = document.getElementById(`radio-${idPlan}`);
+            if(radioInput) radioInput.checked = true;
+
+            // Habilitar/deshabilitar checkboxes de costes adicionales
+            const checkPagoApp = document.getElementById('checkPagoApp');
+            const checkAppPersonalizada = document.getElementById('checkAppPersonalizada');
+
+            if (idPlan === 'sota') {
+                checkPagoApp.disabled = true;
+                checkPagoApp.checked = false;
+                checkAppPersonalizada.disabled = true;
+                checkAppPersonalizada.checked = false;
+            } else if (idPlan === 'caballo') {
+                checkPagoApp.disabled = false;
+                checkAppPersonalizada.disabled = true;
+                checkAppPersonalizada.checked = false;
+            } else if (idPlan === 'rey') {
+                checkPagoApp.disabled = false;
+                checkAppPersonalizada.disabled = false;
+            }
+            actualizarCostes();
+        }
+
+        function actualizarCostes() {
+            let costeMensual = 0;
+            let nombrePlan = "Ninguno";
+
+            if (planSeleccionadoId && fullPlanData[planSeleccionadoId]) {
+                costeMensual = fullPlanData[planSeleccionadoId].costeMensual;
+                nombrePlan = fullPlanData[planSeleccionadoId].nombre;
+            }
+
+            let costesUnicos = 0;
+            if (document.getElementById('checkPagoApp').checked && !document.getElementById('checkPagoApp').disabled) {
+                costesUnicos += costesUnicosInfo.pagoApp.coste;
+            }
+            if (document.getElementById('checkAppPersonalizada').checked && !document.getElementById('checkAppPersonalizada').disabled) {
+                costesUnicos += costesUnicosInfo.appPersonalizada.coste;
+            }
+
+            const costeTotalAnual = (costeMensual * 12) + costesUnicos;
+
+            document.getElementById('planSeleccionadoNombre').textContent = nombrePlan;
+            document.getElementById('costeMensualSeleccionado').textContent = `${costeMensual}€`;
+            document.getElementById('costesUnicosSeleccionados').textContent = `${costesUnicos}€`;
+            document.getElementById('costeTotalAnual').textContent = `${costeTotalAnual}€`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            generarRadiosPlanes();
+            seleccionarPlan('sota'); // Seleccionar SOTA por defecto
+
+            const ctx = document.getElementById('costesMensualesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['SOTA', 'CABALLO', 'REY'],
+                    datasets: [{
+                        label: 'Coste Mensual (€)',
+                        data: [
+                            fullPlanData.sota.costeMensual,
+                            fullPlanData.caballo.costeMensual,
+                            fullPlanData.rey.costeMensual
+                        ],
+                        backgroundColor: [
+                            'rgba(245, 158, 11, 0.6)', // amber-500 with alpha
+                            'rgba(217, 119, 6, 0.6)',  // amber-600 with alpha
+                            'rgba(180, 83, 9, 0.6)'    // amber-700 with alpha
+                        ],
+                        borderColor: [
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(180, 83, 9, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '€';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Coste: ${context.raw}€`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+
+    </script>
+</body>
+</html>
