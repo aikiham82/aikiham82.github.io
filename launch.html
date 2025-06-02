@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Lanzamiento: Sammy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices:
+    - Report Info: Fases del lanzamiento -> Goal: Organizar/Change -> Viz: Diagrama de proceso horizontal (HTML/Tailwind) -> Interaction: Navegación visual clara. -> Justification: Transforma una lista de texto en una hoja de ruta visual y fácil de seguir.
+    - Report Info: Objetivos cuantitativos (descargas, centros, retención) -> Goal: Comparar/Informar -> Viz: Gráfico de barras (Chart.js/Canvas) -> Interaction: Botones para filtrar datos por fase. -> Justification: Cuantifica los objetivos de forma impactante y permite una comparación directa entre fases.
+    - Report Info: Público Objetivo -> Goal: Informar/Comparar -> Viz: Tarjetas lado a lado (HTML/Tailwind) con iconos. -> Justification: Facilita la comparación rápida de los dos perfiles de cliente.
+    - Report Info: Canales de Marketing -> Goal: Organizar -> Viz: Sistema de pestañas (HTML/JS) -> Interaction: Clic en pestañas para cambiar contenido. -> Justification: Organiza una gran cantidad de información en categorías digeribles (Digital/Offline), mejorando la claridad.
+    - Report Info: Propuestas de Diferenciación -> Goal: Informar -> Viz: Rejilla de tarjetas con iconos. -> Interaction: Efectos visuales al pasar el ratón. -> Justification: Presenta los puntos clave de venta de una manera visualmente atractiva y moderna.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+    <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold text-sky-600">Sammy</span>
+                <span class="ml-2 text-xl font-medium text-slate-600">Plan de Lanzamiento</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#fases" class="text-slate-600 hover:text-sky-600 transition-colors px-3 py-2 rounded-md text-sm font-medium">Fases</a>
+                <a href="#objetivos" class="text-slate-600 hover:text-sky-600 transition-colors px-3 py-2 rounded-md text-sm font-medium">Objetivos</a>
+                <a href="#publico" class="text-slate-600 hover:text-sky-600 transition-colors px-3 py-2 rounded-md text-sm font-medium">Público</a>
+                <a href="#marketing" class="text-slate-600 hover:text-sky-600 transition-colors px-3 py-2 rounded-md text-sm font-medium">Marketing</a>
+                <a href="#diferenciacion" class="text-slate-600 hover:text-sky-600 transition-colors px-3 py-2 rounded-md text-sm font-medium">Diferenciación</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+    <section id="inicio" class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">Hoja de Ruta Estratégica para <span class="text-sky-600">Sammy</span></h1>
+        <p class="max-w-3xl mx-auto text-lg text-slate-600">Una visualización interactiva del plan de lanzamiento, diseñada para transformar la estrategia en acción. Explora cada componente del plan para asegurar un lanzamiento exitoso y un crecimiento sostenido.</p>
+    </section>
+
+    <section id="fases" class="mb-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-slate-900">Fases del Lanzamiento</h2>
+            <p class="mt-2 text-md text-slate-500">Un recorrido estructurado desde la preparación hasta el crecimiento continuo.</p>
+        </div>
+        <div class="relative">
+            <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-sky-200" aria-hidden="true"></div>
+            <div class="relative grid md:grid-cols-3 gap-12">
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-100">
+                    <div class="flex items-center justify-center mx-auto w-16 h-16 bg-sky-100 text-sky-600 rounded-full mb-4 text-2xl font-bold">1</div>
+                    <h3 class="text-xl font-semibold mb-2 text-slate-800">Pre-lanzamiento</h3>
+                    <p class="text-slate-500 text-sm">Creación de expectación y validación del producto. (2-3 meses)</p>
+                </div>
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-100">
+                    <div class="flex items-center justify-center mx-auto w-16 h-16 bg-sky-100 text-sky-600 rounded-full mb-4 text-2xl font-bold">2</div>
+                    <h3 class="text-xl font-semibold mb-2 text-slate-800">Lanzamiento</h3>
+                    <p class="text-slate-500 text-sm">Impacto inicial y adquisición de los primeros usuarios. (1-2 meses)</p>
+                </div>
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-100">
+                    <div class="flex items-center justify-center mx-auto w-16 h-16 bg-sky-100 text-sky-600 rounded-full mb-4 text-2xl font-bold">3</div>
+                    <h3 class="text-xl font-semibold mb-2 text-slate-800">Post-lanzamiento</h3>
+                    <p class="text-slate-500 text-sm">Optimización, crecimiento y fidelización continua.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="objetivos" class="mb-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-slate-900">Objetivos Cuantificables</h2>
+            <p class="mt-2 text-md text-slate-500">Métricas clave para medir el éxito en cada fase. Filtra por fase para explorar los KPIs.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100">
+            <div class="flex justify-center space-x-2 mb-4">
+                <button id="btn-all" class="filter-btn bg-sky-600 text-white px-4 py-2 rounded-full text-sm font-medium">Todos</button>
+                <button id="btn-pre" class="filter-btn bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border border-slate-200 hover:bg-slate-100">Pre-lanzamiento</button>
+                <button id="btn-launch" class="filter-btn bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border border-slate-200 hover:bg-slate-100">Lanzamiento</button>
+                <button id="btn-post" class="filter-btn bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border border-slate-200 hover:bg-slate-100">Post-lanzamiento</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="objetivosChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section id="publico" class="mb-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-slate-900">Nuestro Público Objetivo</h2>
+            <p class="mt-2 text-md text-slate-500">Sammy está diseñado para dos audiencias clave con necesidades distintas pero complementarias.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-100">
+                <h3 class="text-2xl font-semibold text-sky-600 mb-4">👤 Usuarios Finales</h3>
+                <p class="text-slate-600 mb-4">Personas que buscan comodidad y eficiencia para agendar sus clases y sesiones. Valoran la flexibilidad y el control sobre su tiempo.</p>
+                <ul class="space-y-2 text-slate-700">
+                    <li class="flex items-start"><span class="mr-2 mt-1 text-sky-500">✓</span><span>Agendar clases sin complicaciones.</span></li>
+                    <li class="flex items-start"><span class="mr-2 mt-1 text-sky-500">✓</span><span>Recibir recordatorios automáticos.</span></li>
+                    <li class="flex items-start"><span class="mr-2 mt-1 text-sky-500">✓</span><span>Gestionar reservas desde cualquier lugar.</span></li>
+                </ul>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-100">
+                <h3 class="text-2xl font-semibold text-sky-600 mb-4">🏢 Centros y Negocios</h3>
+                <p class="text-slate-600 mb-4">PYMES y autónomos que desean optimizar la gestión de su negocio, reducir la carga administrativa y mejorar la experiencia de sus clientes.</p>
+                <ul class="space-y-2 text-slate-700">
+                    <li class="flex items-start"><span class="mr-2 mt-1 text-sky-500">✓</span><span>Automatizar la gestión de horarios y pagos.</span></li>
+                    <li class="flex items-start"><span class="mr-2 mt-1 text-sky-500">✓</span><span>Controlar la asistencia y la contabilidad.</span></li>
+                    <li class="flex items-start"><span class="mr-2 mt-1 text-sky-500">✓</span><span>Analizar el rendimiento del negocio.</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="marketing" class="mb-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-slate-900">Estrategia de Marketing 360°</h2>
+            <p class="mt-2 text-md text-slate-500">Un enfoque integrado para llegar a nuestros dos públicos a través de canales digitales y offline.</p>
+        </div>
+        <div class="w-full max-w-4xl mx-auto">
+            <div class="mb-4 flex space-x-1 p-1 bg-slate-200 rounded-xl">
+                <button class="tab-btn active w-full py-2.5 text-sm font-medium leading-5 text-sky-700 rounded-lg bg-white shadow">Canales Digitales</button>
+                <button class="tab-btn w-full py-2.5 text-sm font-medium leading-5 text-slate-600 rounded-lg hover:bg-white/50">Canales Offline</button>
+            </div>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-100">
+                <div id="digital-content" class="tab-content">
+                    <ul class="space-y-4 text-slate-600">
+                        <li><strong>Marketing de Contenidos:</strong> Blog, guías y casos de éxito para atraer y educar.</li>
+                        <li><strong>Redes Sociales:</strong> Contenido visual en Instagram/TikTok y B2B en LinkedIn.</li>
+                        <li><strong>Publicidad Pagada:</strong> Campañas en Google Ads y Social Ads segmentadas por intereses.</li>
+                        <li><strong>Email Marketing:</strong> Newsletters y secuencias automáticas para nutrir leads.</li>
+                        <li><strong>SEO & ASO:</strong> Optimización para buscadores y tiendas de apps.</li>
+                        <li><strong>Influencers y PR:</strong> Colaboraciones para generar confianza y alcance.</li>
+                    </ul>
+                </div>
+                <div id="offline-content" class="tab-content hidden">
+                    <ul class="space-y-4 text-slate-600">
+                        <li><strong>Eventos y Ferias:</strong> Presencia en eventos del sector para networking y demos.</li>
+                        <li><strong>Alianzas Estratégicas:</strong> Colaboraciones con asociaciones y empresas complementarias.</li>
+                        <li><strong>Materiales Impresos:</strong> Folletos y tarjetas QR para un impacto directo en eventos.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="diferenciacion" class="mb-12">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-slate-900">Nuestra Ventaja Competitiva</h2>
+            <p class="mt-2 text-md text-slate-500">¿Qué hace a Sammy diferente? Estos son nuestros pilares para destacar en el mercado.</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100 transform hover:-translate-y-1 transition-transform duration-300">
+                <h4 class="font-semibold text-lg text-slate-800 mb-2">✨ UX/UI Superior</h4>
+                <p class="text-sm text-slate-500">Un diseño intuitivo y agradable que reduce la fricción y aumenta la adopción.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100 transform hover:-translate-y-1 transition-transform duration-300">
+                <h4 class="font-semibold text-lg text-slate-800 mb-2">⚙️ Gestión Todo en Uno</h4>
+                <p class="text-sm text-slate-500">Más que reservas: contabilidad, asistencia y reportes integrados.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100 transform hover:-translate-y-1 transition-transform duration-300">
+                <h4 class="font-semibold text-lg text-slate-800 mb-2">🤝 Foco en la Comunidad</h4>
+                <p class="text-sm text-slate-500">Herramientas para fomentar la interacción entre usuarios y centros.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100 transform hover:-translate-y-1 transition-transform duration-300">
+                <h4 class="font-semibold text-lg text-slate-800 mb-2">💰 Precios Flexibles</h4>
+                <p class="text-sm text-slate-500">Planes escalables y transparentes que se adaptan a cada tipo de negocio.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100 transform hover:-translate-y-1 transition-transform duration-300">
+                <h4 class="font-semibold text-lg text-slate-800 mb-2">📞 Soporte Proactivo</h4>
+                <p class="text-sm text-slate-500">Un equipo de soporte excepcional para construir confianza y lealtad.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="bg-slate-100 border-t border-slate-200">
+    <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-slate-500 text-sm">
+        <p>&copy; 2025 Sammy Launch Plan. Una visualización estratégica para un futuro brillante.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const data = {
+            'pre-lanzamiento': {
+                labels: ['Registros Landing Page', 'Centros Adopters'],
+                values: [500, 5],
+                bgColors: ['#38bdf8', '#0ea5e9'],
+                borderColors: ['#0284c7', '#0369a1'],
+            },
+            'lanzamiento': {
+                labels: ['Descargas (miles)', 'Centros Registrados', 'Rating App'],
+                values: [10, 50, 4.5],
+                bgColors: ['#38bdf8', '#0ea5e9', '#0284c7'],
+                borderColors: ['#0ea5e9', '#0284c7', '#0369a1'],
+            },
+            'post-lanzamiento': {
+                labels: ['Retención Usuarios (%)', 'Crecimiento Centros (%)'],
+                values: [60, 20],
+                bgColors: ['#38bdf8', '#0ea5e9'],
+                borderColors: ['#0284c7', '#0369a1'],
+            }
+        };
+
+        const ctx = document.getElementById('objetivosChart').getContext('2d');
+        let chart;
+
+        function createOrUpdateChart(phase) {
+            const chartData = {
+                labels: [],
+                datasets: [{
+                    label: 'Objetivo',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            };
+
+            if (phase === 'all') {
+                Object.keys(data).forEach(p => {
+                    chartData.labels.push(...data[p].labels);
+                    chartData.datasets[0].data.push(...data[p].values);
+                    chartData.datasets[0].backgroundColor.push(...data[p].bgColors);
+                    chartData.datasets[0].borderColor.push(...data[p].borderColors);
+                });
+            } else {
+                chartData.labels = data[phase].labels;
+                chartData.datasets[0].data = data[phase].values;
+                chartData.datasets[0].backgroundColor = data[phase].bgColors;
+                chartData.datasets[0].borderColor = data[phase].borderColors;
+            }
+
+            if (chart) {
+                chart.data = chartData;
+                chart.update();
+            } else {
+                chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: '#1e293b',
+                                titleFont: { size: 14 },
+                                bodyFont: { size: 12 },
+                                padding: 10,
+                                cornerRadius: 4,
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        createOrUpdateChart('all');
+
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('bg-sky-600', 'text-white');
+                    btn.classList.add('bg-white', 'text-slate-600');
+                });
+                button.classList.add('bg-sky-600', 'text-white');
+                button.classList.remove('bg-white', 'text-slate-600');
+
+                const phase = button.id.split('-')[1];
+                createOrUpdateChart(phase);
+            });
+        });
+
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-white', 'shadow', 'text-sky-700');
+                    btn.classList.add('hover:bg-white/50', 'text-slate-600');
+                });
+                button.classList.add('active', 'bg-white', 'shadow', 'text-sky-700');
+                button.classList.remove('hover:bg-white/50', 'text-slate-600');
+
+                const contentId = button.textContent.trim().toLowerCase().startsWith('canales digitales') ? 'digital-content' : 'offline-content';
+
+                tabContents.forEach(content => {
+                    if (content.id === contentId) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    });
+</script>
+</body>
+</html>
